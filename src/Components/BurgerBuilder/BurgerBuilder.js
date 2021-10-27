@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import Burger from './Burger/Burger'
 import Controls from './Controls/Controls';
+import Summary from './Summary/Summary';
 
 const INGREDIENT_PRICES = {
     salad: 20,
@@ -16,7 +18,17 @@ export default class BurgerBuilder extends Component {
             { type: 'meat', amount: 0 },
         ],
         totalPrice: 80,
+        modalOpen: false,
+        purchasable: false,
     }
+
+    updatePurchable = ingredients => {
+        const sum = ingredients.reduce((sum, element) => {
+            return sum + element.amount;
+        }, 0);
+        this.setState({ purchasable: sum > 0 })
+    }
+
     addIngredientHandle = type => {
         const ingredients = [...this.state.ingredients];
         const newPrice = this.state.totalPrice + INGREDIENT_PRICES[type];
@@ -25,6 +37,7 @@ export default class BurgerBuilder extends Component {
                 item.amount++;
             }
             this.setState({ ingredients: ingredients, totalPrice: newPrice })
+            this.updatePurchable(ingredients);
 
         }
     }
@@ -39,18 +52,42 @@ export default class BurgerBuilder extends Component {
                 item.amount--;
             }
             this.setState({ ingredients: ingredients, totalPrice: newPrice })
+            this.updatePurchable(ingredients);
 
         }
     }
+
+    toggleModal = () => {
+        this.setState({
+            modalOpen: !this.state.modalOpen
+        })
+    }
+
     render() {
         return (
-            <div className="d-flex flex-md-row flex-column">
-                <Burger ingredients={this.state.ingredients} />
-                <Controls
-                    ingredientAdded={this.addIngredientHandle}
-                    ingredientRemoved={this.removeIngredientHandle}
-                    price={this.state.totalPrice}
-                />
+            <div>
+                <div div className="d-flex flex-md-row flex-column" >
+                    <Burger ingredients={this.state.ingredients} />
+                    <Controls
+                        ingredientAdded={this.addIngredientHandle}
+                        ingredientRemoved={this.removeIngredientHandle}
+                        price={this.state.totalPrice}
+                        toggleModal={this.toggleModal}
+                        purchasable={this.state.purchasable}
+                    />
+                </div >
+                <Modal isOpen={this.state.modalOpen}>
+                    <ModalHeader>Your Order Summary</ModalHeader>
+                    <ModalBody>
+                        <h5>Total Price: {this.state.totalPrice.toFixed(0)} BDT</h5>
+                        <Summary ingredients={this.state.ingredients} />
+
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="success" onClick={this.toggleModal}>Continue to Checkout</Button>
+                        <Button color="secondary" onClick={this.toggleModal}>Cancel</Button>
+                    </ModalFooter>
+                </Modal>
             </div>
         )
     }
