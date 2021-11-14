@@ -7,6 +7,8 @@ import Header from "./Header/Header";
 import Checkout from "./Orders/Checkout/Checkout";
 import Orders from "./Orders/Orders";
 import {authCheck} from '../redux/authActionCreators';
+import Logout from "./Auth/Logout";
+
 
 const mapStateToProps = state => {
     return {
@@ -38,6 +40,7 @@ class Main extends Component {
                 <Switch>
                     <Route path="/orders" component={Orders} />
                     <Route path="/checkout" component={Checkout} />
+                    <Route path="/logout" component={Logout} />
                     <Route path="/" exact component={BurgerBuilder} />
                     <Redirect to="/" />
     
