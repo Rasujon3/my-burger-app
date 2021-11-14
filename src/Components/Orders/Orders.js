@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Spinner } from 'reactstrap';
+import Spinner from '../Spinner/Spinner';
 import { fetchOrders } from '../../redux/actionCreators';
 import Order from './Order/Order';
 
