@@ -1,7 +1,9 @@
+import { Alert } from 'reactstrap';
 import { Formik } from 'formik';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {auth} from '../../redux/authActionCreators';
+
 
 import Spinner from '../Spinner/Spinner';
 
@@ -26,6 +28,10 @@ const mapStateToProps = state => {
         this.setState({mode: this.state.mode === "Sign Up"? "Login" : "Sign Up"})
     }
     render() {
+        let err = null;
+        if (this.props.authFailedMessage!==null) {
+            err = <Alert color="danger">{this.props.authFailedMessage}</Alert>
+        }
         let form = null;
         if (this.props.authLoading) {
             form = <Spinner/>
@@ -124,6 +130,7 @@ const mapStateToProps = state => {
         }
         return (
             <div>
+                {err}
                 {form}
             </div >
         )
