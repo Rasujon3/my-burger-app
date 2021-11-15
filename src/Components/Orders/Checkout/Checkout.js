@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Button, Modal, ModalBody, Spinner } from "reactstrap";
+import { Button, Modal, ModalBody } from "reactstrap";
+import Spinner from '../../Spinner/Spinner';
 
 import axios from "axios";
 
