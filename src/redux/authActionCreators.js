@@ -32,7 +32,7 @@ export const auth = (email, password, mode) => dispatch => {
         email: email,
         password: password,
     }
-    let url = "http://localhost:5000";
+    let url = process.env.REACT_APP_BACKEND_URL;
     let authUrl = null;
     if (mode === "Sign Up") {
         authUrl = `${url}/user`;
