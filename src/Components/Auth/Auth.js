@@ -2,14 +2,14 @@ import { Alert } from 'reactstrap';
 import { Formik } from 'formik';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {auth} from '../../redux/authActionCreators';
+import { auth } from '../../redux/authActionCreators';
 
 
 import Spinner from '../Spinner/Spinner';
 
 const mapDispatchToProps = dispatch => {
     return {
-        auth: (email,password,mode)=> dispatch(auth(email,password,mode))
+        auth: (email, password, mode) => dispatch(auth(email, password, mode))
     }
 }
 
@@ -20,21 +20,21 @@ const mapStateToProps = state => {
     }
 }
 
- class Auth extends Component {
-    state={
+class Auth extends Component {
+    state = {
         mode: "Sign Up"
     }
-    swtichModeHandler=()=> {
-        this.setState({mode: this.state.mode === "Sign Up"? "Login" : "Sign Up"})
+    swtichModeHandler = () => {
+        this.setState({ mode: this.state.mode === "Sign Up" ? "Login" : "Sign Up" })
     }
     render() {
         let err = null;
-        if (this.props.authFailedMessage!==null) {
+        if (this.props.authFailedMessage !== null) {
             err = <Alert color="danger">{this.props.authFailedMessage}</Alert>
         }
         let form = null;
         if (this.props.authLoading) {
-            form = <Spinner/>
+            form = <Spinner />
         } else {
             form = (
                 <Formik
@@ -48,7 +48,7 @@ const mapStateToProps = state => {
                     }
                     onSubmit={
                         (values) => {
-                            this.props.auth(values.email, values.password,this.state.mode);
+                            this.props.auth(values.email, values.password, this.state.mode);
                         }
                     }
                     validate={(values) => {
@@ -60,17 +60,17 @@ const mapStateToProps = state => {
                         }
                         if (!values.password) {
                             errors.password = 'Required';
-                        } else if (values.password.length < 6) {
-                            errors.password = 'Must be atleast 6 characters!';
+                        } else if (values.password.length < 5) {
+                            errors.password = 'Must be atleast 5 characters!';
                         }
-                        if (this.state.mode==="Sign Up") { 
-                        
-                        if (!values.passwordConfirm) {
-                            errors.passwordConfirm = 'Required';
-                        } else if (values.password !== values.passwordConfirm) {
-                            errors.passwordConfirm = 'Password deos not match!';
+                        if (this.state.mode === "Sign Up") {
+
+                            if (!values.passwordConfirm) {
+                                errors.passwordConfirm = 'Required';
+                            } else if (values.password !== values.passwordConfirm) {
+                                errors.passwordConfirm = 'Password deos not match!';
+                            }
                         }
-                    }
                         // console.log("Errors: ", errors);
                         return errors;
                     }}
@@ -85,9 +85,9 @@ const mapStateToProps = state => {
                                 width: "100%",
                                 backgroundColor: "#D70F64",
                                 color: "white",
-                            }} className="btn btn-lg" onClick={this.swtichModeHandler}>Switch to {this.state.mode==="Sign Up"? "Login" : "Sign Up"}</button>
-                            <br/>
-                            <br/>
+                            }} className="btn btn-lg" onClick={this.swtichModeHandler}>Switch to {this.state.mode === "Sign Up" ? "Login" : "Sign Up"}</button>
+                            <br />
+                            <br />
                             <form onSubmit={handleSubmit}>
                                 <input
                                     name="email"
@@ -107,19 +107,19 @@ const mapStateToProps = state => {
                                 />
                                 <span style={{ color: "red" }}>{errors.password}</span>
                                 <br />
-                                {this.state.mode==="Sign Up"? <div>
-                                <input
-                                    name="passwordConfirm"
-                                    placeholder="Confirm Password"
-                                    className="form-control"
-                                    value={values.passwordConfirm}
-                                    onChange={handleChange}
-                                />
+                                {this.state.mode === "Sign Up" ? <div>
+                                    <input
+                                        name="passwordConfirm"
+                                        placeholder="Confirm Password"
+                                        className="form-control"
+                                        value={values.passwordConfirm}
+                                        onChange={handleChange}
+                                    />
                                 </div> : null}
-                                
+
                                 <span style={{ color: "red" }}>{errors.passwordConfirm}</span>
                                 <br />
-                                <button type="submit" className="btn btn-success">{this.state.mode==="Sign Up" ? "Sign Up" : "Login"}</button>
+                                <button type="submit" className="btn btn-success">{this.state.mode === "Sign Up" ? "Sign Up" : "Login"}</button>
 
                             </form>
                         </div>)
@@ -137,4 +137,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps) (Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
